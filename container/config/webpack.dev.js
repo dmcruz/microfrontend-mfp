@@ -6,22 +6,21 @@ const commonConfig = require('./webpack.common');
 const devConfig = {
   mode: 'development',
   devServer: {
-    port: 8081,
+    port: 8080,
     historyApiFallback: {
       index: 'index.html'
     }
   },
   plugins: [
+    new ModuleFederationlugin({
+      name: 'container',
+      remotes: {
+        marketing: 'marketing@http://localhost:8081/remoteEntry.js',
+      }
+    }),
     new HtmlWebPackPlugin({
       template: './public/index.html'
-    }),
-    new ModuleFederationlugin({
-      name: 'marketing',
-      filename: 'remoteEntry.js',
-      exposes: {
-        './MarketingApp': './src/bootstrap',
-      },
-    }),
+    })
   ]
 }
 
